@@ -1,3 +1,6 @@
+import json
+import os
+
 class Quiz:
     def __init__(self, question, choices, answer):
         self.question = question
@@ -14,6 +17,23 @@ class Quiz:
     # 정답 확인 기능
     def is_correct(self, user_answer):
         return user_answer == self.answer
+    
+    # 딕셔너리 형태로 변환하는 기능 (저장용)
+    def to_dict(self):
+        return {
+            "question": self.question,
+            "choices": self.choices,
+            "answer": self.answer
+        }
+    
+    # 딕셔너리에서 Quiz 객체로 변환하는 기능 (불러오기용)
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            data["question"],
+            data["choices"],
+            data["answer"]
+        )
     
     def get_default_quizzes():
         return [
@@ -47,8 +67,9 @@ class Quiz:
 
 class QuizGame:
     def __init__(self):
-        self.quizzes = Quiz.get_default_quizzes()
+        self.quizzes = []
         self.best_score = 0
+        self.load_data()
 
     # 메뉴 출력 기능
     def show_menu(self):
@@ -75,8 +96,9 @@ class QuizGame:
             elif choice == "3":
                 self.show_quiz_list()
             elif choice == "4":
-                print("점수 확인 기능은 아직 준비 중입니다.")
+                self.show_best_score()
             elif choice == "5":
+                self.save_data()
                 print("프로그램을 종료합니다.")
                 break
             else:
@@ -131,6 +153,9 @@ class QuizGame:
             self.best_score = score
             print("새로운 최고 점수입니다")
 
+        # 퀴즈를 풀고 나서 데이터를 저장하여 최고 점수와 퀴즈 목록이 안전하게 보관되도록 함
+        self.save_data()
+
     # 퀴즈 추가 기능
     def add_quiz(self):
         print("\n 새로운 퀴즈를 추가합니다.")
@@ -170,7 +195,10 @@ class QuizGame:
         new_quiz = Quiz(question, choices, answer)
         self.quizzes.append(new_quiz)
         print("퀴즈가 추가되었습니다!")
+        # 새로운 퀴즈를 추가하기 전에 데이터를 저장하여 안전하게 보관
+        self.save_data()
 
+    # 퀴즈 목록 출력 기능
     def show_quiz_list(self):
         if not self.quizzes:
             print("등록된 퀴즈가 없습니다.")
@@ -181,6 +209,50 @@ class QuizGame:
         for i, quiz in enumerate(self.quizzes, start=1):
             print(f"[{i}] {quiz.question}")
         print("-" * 40)
+
+    # 최고 점수 확인 기능
+    def show_best_score(self):
+        if self.best_score == 0:
+            print("아직 기록된 최고 점수가 없습니다.")
+        else:
+            print(f" 최고 점수: {self.best_score}점")
+
+    # 데이터 저장 및 불러오기 기능
+    def save_data(self):
+        data = {
+            "quizzes": [quiz.to_dict() for quiz in self.quizzes],
+            "best_score": self.best_score
+        }
+
+        try:
+            # json.dump: 파이썬 객체를 JSON 문자열로 변환하는 함수
+            with open("state.json", "w", encoding="utf-8") as file:
+                json.dump(data, file, ensure_ascii=False, indent=4)
+        except Exception as e:
+            print(f"저장 중 오류가 발생했습니다: {e}")
+
+    def load_data(self):
+        if not os.path.exists("state.json"):
+            self.quizzes = Quiz.get_default_quizzes()
+            self.best_score = 0
+            return
+
+        try:
+            with open("state.json", "r", encoding="utf-8") as file:
+                data = json.load(file)
+
+            self.quizzes = [Quiz.from_dict(item) for item in data.get("quizzes", [])]
+            self.best_score = data.get("best_score", 0)
+
+            if not self.quizzes:
+                self.quizzes = Quiz.get_default_quizzes()
+
+            print(f" 저장된 데이터를 불러왔습니다. (퀴즈 {len(self.quizzes)}개, 최고점수 {self.best_score}점)")
+        except Exception:
+            print(" 데이터 파일이 없거나 손상되어 기본 퀴즈로 복구합니다.")
+            self.quizzes = Quiz.get_default_quizzes()
+            self.best_score = 0
+            self.save_data()
 
 if __name__ == "__main__":
     game = QuizGame()
