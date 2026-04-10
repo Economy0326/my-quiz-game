@@ -19,10 +19,6 @@ Python 콘솔 기반으로 동작하는 퀴즈 게임입니다.
 ### 2. 프로그램 실행
     python main.py
 
-또는 환경에 따라 아래 명령어로 실행할 수 있습니다.
-
-    py main.py
-
 ## 기능 목록
 - 퀴즈 풀기
 - 퀴즈 추가
@@ -88,17 +84,17 @@ Python 콘솔 기반으로 동작하는 퀴즈 게임입니다.
     {
       "quizzes": [
         {
-          "question": "Python의 창시자는?",
+          "question": "반복문 키워드가 아닌 것은??",
           "choices": [
-            "Guido van Rossum",
-            "Linus Torvalds",
-            "James Gosling",
-            "Bjarne Stroustrup"
+            "for",
+            "while",
+            "loop",
+            "break"
           ],
-          "answer": 1
+          "answer": 3
         }
       ],
-      "best_score": 3
+      "best_score": 2
     }
 
 ## 입력 예외 처리
@@ -118,16 +114,16 @@ Python 콘솔 기반으로 동작하는 퀴즈 게임입니다.
 이번 프로젝트에서는 Git을 사용해 기능 단위로 커밋을 나누어 작업했습니다.
 
 예시:
-- `Init: 프로젝트 초기 파일과 메뉴 구조 생성`
-- `Feat: Quiz 클래스 출력과 정답 확인 메서드 추가`
-- `Feat: 기본 퀴즈 데이터 5개 추가`
-- `Feat: 퀴즈 출제와 점수 계산 기능 구현`
-- `Feat: 퀴즈 추가 기능 구현`
-- `Feat: 등록된 퀴즈 목록 조회 기능 추가`
-- `Feat: 최고 점수 확인 기능 추가`
-- `Feat: state.json 저장 및 불러오기 기능 구현`
-- `Fix: 비정상 종료와 입력 예외 처리 추가`
-- `Docs: README 작성`
+- `init: start project`
+- `feat: quiz class output and is_correct method`
+- `feat: basic quiz 5`
+- `(origin/feature/play-quiz, feature/play-quiz) feat: quiz and score`
+- `quiz add`
+- `quiz list`
+- `feat: state.json load,save`
+- `fix:exception`
+- `readme`
+- `(HEAD -> main, origin/main, origin/HEAD) readme patch`
 
 clone 저장소에서 README 수정 테스트를 진행했습니다.
 
