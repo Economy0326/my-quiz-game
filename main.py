@@ -14,12 +14,42 @@ class Quiz:
     # 정답 확인 기능
     def is_correct(self, user_answer):
         return user_answer == self.answer
+    
+    def get_default_quizzes():
+      # 0인덱스로 사용 예정
+      return [
+          Quiz(
+              "git의 버전 확인 명령어는?",
+              ["git status", "git log", "git show", "git version"],
+              3
+          ),
+          Quiz(
+              "Python 파일의 기본 확장자는?",
+              [".java", ".py", ".js", ".cpp"],
+              1
+          ),
+          Quiz(
+              "리스트를 만들 때 사용하는 기호는?",
+              ["{}", "()", "[]", "<>"],
+              2
+          ),
+          Quiz(
+              "파이썬에서 허용되지 않은 식별자는?",
+              ["my_variable", "2nd_variable", "_private_var", "class"],
+              1
+          ),
+          Quiz(
+              "반복문 키워드가 아닌 것은?",
+              ["for", "while", "loop", "break"],
+              2
+          ),
+      ]
 
 
 class QuizGame:
     def __init__(self):
-        self.quizzes = []
-        self.best_score = 0
+      self.quizzes = get_default_quizzes()
+      self.best_score = 0
 
     def show_menu(self):
         print("=" * 40)
