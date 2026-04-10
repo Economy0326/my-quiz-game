@@ -255,5 +255,21 @@ class QuizGame:
             self.save_data()
 
 if __name__ == "__main__":
-    game = QuizGame()
-    game.run()
+    game = None
+    try:
+        game = QuizGame()
+        game.run()
+    except KeyboardInterrupt:
+        print("\n 사용자가 종료를 요청했습니다. 저장 후 안전하게 종료합니다.")
+        if game is not None:
+            try:
+                game.save_data()
+            except Exception:
+                pass
+    except EOFError:
+        print("\n 입력이 종료되었습니다. 저장 후 안전하게 종료합니다.")
+        if game is not None:
+            try:
+                game.save_data()
+            except Exception:
+                pass
