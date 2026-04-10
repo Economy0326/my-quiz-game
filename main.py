@@ -16,40 +16,39 @@ class Quiz:
         return user_answer == self.answer
     
     def get_default_quizzes():
-      # 0인덱스로 사용 예정
-      return [
-          Quiz(
-              "git의 버전 확인 명령어는?",
-              ["git status", "git log", "git show", "git version"],
-              3
-          ),
-          Quiz(
-              "Python 파일의 기본 확장자는?",
-              [".java", ".py", ".js", ".cpp"],
-              1
-          ),
-          Quiz(
-              "리스트를 만들 때 사용하는 기호는?",
-              ["{}", "()", "[]", "<>"],
-              2
-          ),
-          Quiz(
-              "파이썬에서 허용되지 않은 식별자는?",
-              ["my_variable", "2nd_variable", "_private_var", "class"],
-              1
-          ),
-          Quiz(
-              "반복문 키워드가 아닌 것은?",
-              ["for", "while", "loop", "break"],
-              2
-          ),
-      ]
+        return [
+            Quiz(
+                "git의 버전 확인 명령어는?",
+                ["git status", "git log", "git show", "git version"],
+                4
+            ),
+            Quiz(
+                "Python 파일의 기본 확장자는?",
+                [".java", ".py", ".js", ".cpp"],
+                2
+            ),
+            Quiz(
+                "리스트를 만들 때 사용하는 기호는?",
+                ["{}", "()", "[]", "<>"],
+                3
+            ),
+            Quiz(
+                "파이썬에서 허용되지 않은 식별자는?",
+                ["my_variable", "2nd_variable", "_private_var", "class"],
+                2
+            ),
+            Quiz(
+                "반복문 키워드가 아닌 것은?",
+                ["for", "while", "loop", "break"],
+                3
+            ),
+        ]
 
 
 class QuizGame:
     def __init__(self):
-      self.quizzes = get_default_quizzes()
-      self.best_score = 0
+        self.quizzes = Quiz.get_default_quizzes()
+        self.best_score = 0
 
     def show_menu(self):
         print("=" * 40)
@@ -68,7 +67,7 @@ class QuizGame:
             choice = input("선택: ").strip()
 
             if choice == "1":
-                print("퀴즈 풀기 기능은 아직 준비 중입니다.")
+                self.play_quiz()
             elif choice == "2":
                 print("퀴즈 추가 기능은 아직 준비 중입니다.")
             elif choice == "3":
@@ -80,7 +79,54 @@ class QuizGame:
                 break
             else:
                 print("⚠️ 잘못된 입력입니다. 1-5 사이의 숫자를 입력하세요.")
+    
+    def play_quiz(self):
+        if not self.quizzes:
+            print("등록된 퀴즈가 없습니다.")
+            return
 
+        score = 0
+        total = len(self.quizzes)
+
+        print(f"\n 퀴즈 시작 (총 {total}문제)")
+
+        for index, quiz in enumerate(self.quizzes, start=1):
+            print("\n" + "-" * 40)
+            print(f"[문제 {index}]")
+            quiz.display()
+
+            while True:
+                answer = input("정답 입력 (1-4): ").strip()
+
+                if answer == "":
+                    print("빈 입력입니다. 다시 입력하세요.")
+                    continue
+
+                try:
+                    answer = int(answer)
+                except ValueError:
+                    print("숫자를 입력하세요.")
+                    continue
+
+                if answer < 1 or answer > 4:
+                    print("1-4 사이의 숫자를 입력하세요.")
+                    continue
+
+                break
+
+            if quiz.is_correct(answer):
+                print("정답입니다")
+                score += 1
+            else:
+                print(f"오답입니다. 정답은 {quiz.answer}번입니다.")
+
+        print("\n" + "=" * 40)
+        print(f"결과: {total}문제 중 {score}문제 정답")
+        print("=" * 40)
+
+        if score > self.best_score:
+            self.best_score = score
+            print("새로운 최고 점수입니다")
 
 if __name__ == "__main__":
     game = QuizGame()
