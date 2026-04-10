@@ -73,7 +73,7 @@ class QuizGame:
             elif choice == "2":
                 self.add_quiz()
             elif choice == "3":
-                print("퀴즈 목록 기능은 아직 준비 중입니다.")
+                self.show_quiz_list()
             elif choice == "4":
                 print("점수 확인 기능은 아직 준비 중입니다.")
             elif choice == "5":
@@ -170,6 +170,17 @@ class QuizGame:
         new_quiz = Quiz(question, choices, answer)
         self.quizzes.append(new_quiz)
         print("퀴즈가 추가되었습니다!")
+
+    def show_quiz_list(self):
+        if not self.quizzes:
+            print("등록된 퀴즈가 없습니다.")
+            return
+
+        print(f"\n 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)")
+        print("-" * 40)
+        for i, quiz in enumerate(self.quizzes, start=1):
+            print(f"[{i}] {quiz.question}")
+        print("-" * 40)
 
 if __name__ == "__main__":
     game = QuizGame()
