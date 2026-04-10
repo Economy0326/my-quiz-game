@@ -4,6 +4,17 @@ class Quiz:
         self.choices = choices
         self.answer = answer
 
+    # 퀴즈 문제와 선택지를 출력하는 기능
+    def display(self):
+        print(self.question)
+        # enumerate: 리스트의 각 요소에 대해 인덱스와 함께 반복할 수 있게 해주는 함수
+        for i, choice in enumerate(self.choices, start=1):
+            print(f"{i}. {choice}")
+
+    # 정답 확인 기능
+    def is_correct(self, user_answer):
+        return user_answer == self.answer
+
 
 class QuizGame:
     def __init__(self):
