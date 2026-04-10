@@ -50,6 +50,7 @@ class QuizGame:
         self.quizzes = Quiz.get_default_quizzes()
         self.best_score = 0
 
+    # 메뉴 출력 기능
     def show_menu(self):
         print("=" * 40)
         print("        🎯 나만의 퀴즈 게임 🎯")
@@ -61,6 +62,7 @@ class QuizGame:
         print("5. 종료")
         print("=" * 40)
 
+    # 메인 루프
     def run(self):
         while True:
             self.show_menu()
@@ -69,7 +71,7 @@ class QuizGame:
             if choice == "1":
                 self.play_quiz()
             elif choice == "2":
-                print("퀴즈 추가 기능은 아직 준비 중입니다.")
+                self.add_quiz()
             elif choice == "3":
                 print("퀴즈 목록 기능은 아직 준비 중입니다.")
             elif choice == "4":
@@ -80,6 +82,7 @@ class QuizGame:
             else:
                 print("⚠️ 잘못된 입력입니다. 1-5 사이의 숫자를 입력하세요.")
     
+    # 퀴즈 풀기 기능
     def play_quiz(self):
         if not self.quizzes:
             print("등록된 퀴즈가 없습니다.")
@@ -127,6 +130,46 @@ class QuizGame:
         if score > self.best_score:
             self.best_score = score
             print("새로운 최고 점수입니다")
+
+    # 퀴즈 추가 기능
+    def add_quiz(self):
+        print("\n 새로운 퀴즈를 추가합니다.")
+
+        question = input("문제를 입력하세요: ").strip()
+        if not question:
+            print("문제는 비워둘 수 없습니다.")
+            return
+
+        choices = []
+        for i in range(1, 5):
+            choice = input(f"선택지 {i}: ").strip()
+            if not choice:
+                print("선택지는 비워둘 수 없습니다.")
+                return
+            choices.append(choice)
+
+        while True:
+            answer = input("정답 번호 (1-4): ").strip()
+
+            if answer == "":
+                print("빈 입력입니다. 다시 입력하세요.")
+                continue
+
+            try:
+                answer = int(answer)
+            except ValueError:
+                print("숫자를 입력하세요.")
+                continue
+
+            if answer < 1 or answer > 4:
+                print("1-4 사이의 숫자를 입력하세요.")
+                continue
+
+            break
+
+        new_quiz = Quiz(question, choices, answer)
+        self.quizzes.append(new_quiz)
+        print("퀴즈가 추가되었습니다!")
 
 if __name__ == "__main__":
     game = QuizGame()
